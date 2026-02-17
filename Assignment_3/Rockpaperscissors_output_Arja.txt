@@ -1,0 +1,138 @@
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % /usr/bin/python3 "/Users/arja_a
+ventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissor
+s/rockpaperscissors.py"
+Welcome to the Rock-Paper-Scissors game!
+What is your choice? Please type 0 for rock, 1 for paper, and 2 for scissors.
+0
+You chose rock.
+
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+
+Computer chose paper.
+
+_______
+---'   ____)____
+            ______)
+            _______)
+            _______)
+---.__________)
+
+You lose.
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % cd "/Users/arja_aventador/Downl
+oads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors"
+/usr/bin/python3 "/Users/arja_aventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors/rockpaperscissors.py"
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % /usr/bin/python3 "/Users/arja_a
+ventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissor
+s/rockpaperscissors.py"
+Welcome to the Rock-Paper-Scissors game!
+What is your choice? Please type 0 for rock, 1 for paper, and 2 for scissors.
+1
+You chose paper.
+
+_______
+---'   ____)____
+            ______)
+            _______)
+            _______)
+---.__________)
+
+Computer chose scissors.
+
+    _______
+---'   ____)____
+            ______)
+         __________)
+      (____)
+---.__(___)
+
+You lose.
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % cd "/Users/arja_aventador/Downl
+oads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors"
+/usr/bin/python3 "/Users/arja_aventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors/rockpaperscissors.py"
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % /usr/bin/python3 "/Users/arja_a
+ventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissor
+s/rockpaperscissors.py"
+Welcome to the Rock-Paper-Scissors game!
+What is your choice? Please type 0 for rock, 1 for paper, and 2 for scissors.
+2
+You chose scissors.
+
+    _______
+---'   ____)____
+            ______)
+         __________)
+      (____)
+---.__(___)
+
+Computer chose rock.
+
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+
+You lose.
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % cd "/Users/arja_aventador/Downl
+oads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors"
+/usr/bin/python3 "/Users/arja_aventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors/rockpaperscissors.py"
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % /usr/bin/python3 "/Users/arja_a
+ventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissor
+s/rockpaperscissors.py"
+Welcome to the Rock-Paper-Scissors game!
+What is your choice? Please type 0 for rock, 1 for paper, and 2 for scissors.
+0
+You chose rock.
+
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+
+Computer chose scissors.
+
+    _______
+---'   ____)____
+            ______)
+         __________)
+      (____)
+---.__(___)
+
+You win.
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % cd "/Users/arja_aventador/Downl
+oads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors"
+/usr/bin/python3 "/Users/arja_aventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissors/rockpaperscissors.py"
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % /usr/bin/python3 "/Users/arja_a
+ventador/Downloads/NEU_MS_CS/Sem_1_Align_MS_CS/CS_5001/Assignment_3/Assignment 3 - Rock Paper Scissor
+s/rockpaperscissors.py"
+Welcome to the Rock-Paper-Scissors game!
+What is your choice? Please type 0 for rock, 1 for paper, and 2 for scissors.
+1
+You chose paper.
+
+_______
+---'   ____)____
+            ______)
+            _______)
+            _______)
+---.__________)
+
+Computer chose paper.
+
+_______
+---'   ____)____
+            ______)
+            _______)
+            _______)
+---.__________)
+
+It's a tie.
+arja_aventador@Arjas-MacBook-Air Assignment 3 - Rock Paper Scissors % 
