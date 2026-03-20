@@ -1,157 +1,116 @@
 # hangman.py
-# Team Members: <Name 1>, <Name 2>, <Name 3>
-# NU ID(s): <ID 1>, <ID 2>, <ID 3>
+# Team Members: Arja Sadhukhan, Saloni Surana, Ryu Hemingway
+# NU ID(s): 003163346 (Arja)
 # Course: CS 5001 / 5003 — Spring 2026
 
 """
-Hangman Game for CS 5001 / 5003
+Hangman Game
 
 This program implements a terminal-based Hangman game.
 It follows the assignment requirements:
-1. Includes helper functions with docstrings
-2. Includes example calls in comments
-3. Uses a main game loop
-4. Uses an entry point with replay support
+1. Uses helper functions
+2. Includes docstrings
+3. Includes example calls in comments
+4. Uses a main game loop
+5. Supports replay
 
 Extra features added:
 - Colours
-- Simple sound cues
 - Changing themes
+- Optional sound
+- Hidden secret word input for Player 1
 """
 
-# -----------------------------
-# Imports
-# -----------------------------
 import os
-import sys
 import time
+from getpass import getpass
 
-
-# -----------------------------
-# Global Settings
-# -----------------------------
 MAX_WRONG = 6
 USE_COLOURS = True
-USE_SOUND = True
+USE_SOUND = False   # Set to True only if terminal bell works on your machine
 
-
-# -----------------------------
-# Theme Data
-# -----------------------------
-# These themes use ANSI escape codes for terminal colours.
-# If a terminal does not support colours, turn USE_COLOURS to False.
 THEMES = [
     {
         "name": "Forest",
-        "title": "\033[92m",      # bright green
-        "text": "\033[32m",       # green
-        "good": "\033[96m",       # cyan
-        "bad": "\033[91m",        # red
-        "warn": "\033[93m",       # yellow
+        "title": "\033[92m",
+        "text": "\033[32m",
+        "good": "\033[96m",
+        "bad": "\033[91m",
+        "warn": "\033[93m",
         "reset": "\033[0m"
     },
     {
         "name": "Ocean",
-        "title": "\033[94m",      # blue
-        "text": "\033[36m",       # cyan-ish
-        "good": "\033[92m",       # green
-        "bad": "\033[95m",        # magenta
-        "warn": "\033[93m",       # yellow
+        "title": "\033[94m",
+        "text": "\033[36m",
+        "good": "\033[92m",
+        "bad": "\033[95m",
+        "warn": "\033[93m",
         "reset": "\033[0m"
     },
     {
         "name": "Sunset",
-        "title": "\033[95m",      # magenta
-        "text": "\033[33m",       # orange/yellow
-        "good": "\033[92m",       # green
-        "bad": "\033[91m",        # red
-        "warn": "\033[96m",       # cyan
+        "title": "\033[95m",
+        "text": "\033[33m",
+        "good": "\033[92m",
+        "bad": "\033[91m",
+        "warn": "\033[96m",
         "reset": "\033[0m"
     }
 ]
 
 
-# -----------------------------
-# Utility Functions
-# -----------------------------
 def clear_screen():
     """
-    Clears the terminal screen for a cleaner game experience.
+    Clears the terminal screen.
     """
     os.system("cls" if os.name == "nt" else "clear")
 
 
 def get_theme(game_number):
     """
-    Returns a theme dictionary based on the game number so that
-    the theme changes across repeated games.
+    Returns a theme dictionary based on the game number.
 
     Parameters:
-        game_number (int): The number of the current game session.
+        game_number (int): Current game number.
 
     Returns:
-        dict: A dictionary representing the selected theme.
+        dict: Selected theme settings.
     """
     return THEMES[(game_number - 1) % len(THEMES)]
 
 
 def colour_text(text, colour_code, theme):
     """
-    Wraps text in ANSI colour codes if colours are enabled.
+    Wraps text in colour codes if colours are enabled.
 
     Parameters:
-        text (str): The text to colour.
-        colour_code (str): The ANSI colour code.
+        text (str): The text to display.
+        colour_code (str): ANSI colour code.
         theme (dict): Current theme dictionary.
 
     Returns:
-        str: Coloured text if colours are enabled, else plain text.
+        str: Coloured text if enabled, otherwise plain text.
     """
     if USE_COLOURS:
         return f"{colour_code}{text}{theme['reset']}"
     return text
 
 
-def play_sound(sound_type):
+def play_sound():
     """
-    Plays a simple sound cue for user feedback.
+    Plays a simple terminal bell sound if enabled.
 
-    The function tries to use winsound on Windows.
-    On other systems, it falls back to the terminal bell.
-
-    Parameters:
-        sound_type (str): Type of sound to play.
-                          Expected values: 'good', 'bad', 'win', 'lose'
+    Note:
+        This may not work in every VS Code terminal setup.
     """
-    if not USE_SOUND:
-        return
-
-    try:
-        if os.name == "nt":
-            import winsound
-
-            if sound_type == "good":
-                winsound.Beep(900, 150)
-            elif sound_type == "bad":
-                winsound.Beep(400, 200)
-            elif sound_type == "win":
-                winsound.Beep(900, 150)
-                winsound.Beep(1100, 150)
-                winsound.Beep(1300, 200)
-            elif sound_type == "lose":
-                winsound.Beep(500, 200)
-                winsound.Beep(350, 250)
-        else:
-            # Terminal bell fallback
-            print("\a", end="")
-    except Exception:
-        # Safe fallback in case sound is unsupported
-        pass
+    if USE_SOUND:
+        print("\a", end="")
 
 
 def display_hangman(wrong_count, theme):
     """
-    Displays a visual hangman figure based on wrong guesses.
+    Displays the hangman drawing based on the number of wrong guesses.
 
     Parameters:
         wrong_count (int): Number of wrong guesses made.
@@ -223,25 +182,20 @@ def display_hangman(wrong_count, theme):
         """
     ]
 
-    art = stages[wrong_count]
-    print(colour_text(art, theme["warn"], theme))
+    print(colour_text(stages[wrong_count], theme["warn"], theme))
 
 
-# -----------------------------
-# Helper Functions
-# -----------------------------
 def get_display_word(secret_word, guessed_letters):
     """
-    Returns a display version of the secret word where guessed letters
-    appear in their correct positions and unguessed letters appear as
-    underscores. Letters are separated by spaces.
+    Returns a string showing guessed letters in their correct positions
+    and underscores for letters not yet guessed. Letters are separated by spaces.
 
     Parameters:
-        secret_word (str): The secret word to guess.
-        guessed_letters (list): List of letters guessed so far.
+        secret_word (str): The secret word.
+        guessed_letters (list): Letters guessed so far.
 
     Returns:
-        str: Display string with letters and underscores separated by spaces.
+        str: Current display version of the word.
     """
     display_letters = []
 
@@ -262,14 +216,13 @@ def get_display_word(secret_word, guessed_letters):
 def is_won(secret_word, guessed_letters):
     """
     Returns True if every letter in the secret word has been guessed.
-    Returns False otherwise.
 
     Parameters:
-        secret_word (str): The secret word to guess.
-        guessed_letters (list): List of letters guessed so far.
+        secret_word (str): The secret word.
+        guessed_letters (list): Letters guessed so far.
 
     Returns:
-        bool: True if all letters in the secret word have been guessed.
+        bool: True if player has guessed the word, False otherwise.
     """
     for letter in secret_word:
         if letter not in guessed_letters:
@@ -284,15 +237,14 @@ def is_won(secret_word, guessed_letters):
 
 def is_lost(wrong_count, max_wrong):
     """
-    Returns True if the number of wrong guesses has reached or exceeded
-    the maximum allowed wrong guesses. Returns False otherwise.
+    Returns True if wrong guesses have reached or exceeded the maximum allowed.
 
     Parameters:
         wrong_count (int): Number of wrong guesses made.
-        max_wrong (int): Maximum number of wrong guesses allowed.
+        max_wrong (int): Maximum wrong guesses allowed.
 
     Returns:
-        bool: True if the player has lost, False otherwise.
+        bool: True if player has lost, False otherwise.
     """
     return wrong_count >= max_wrong
 
@@ -307,11 +259,11 @@ def get_wrong_guesses(guessed_letters, secret_word):
     Returns a list of guessed letters that are not in the secret word.
 
     Parameters:
-        guessed_letters (list): List of letters guessed so far.
-        secret_word (str): The secret word to guess.
+        guessed_letters (list): Letters guessed so far.
+        secret_word (str): The secret word.
 
     Returns:
-        list: List of wrong guessed letters.
+        list: List of incorrect guessed letters.
     """
     wrong_letters = []
 
@@ -327,144 +279,122 @@ def get_wrong_guesses(guessed_letters, secret_word):
 # print(get_wrong_guesses(['a', 'b'], 'apple'))                # ['b']
 
 
-# -----------------------------
-# Main Game Loop
-# -----------------------------
-def play_hangman(secret_word, game_number=1):
+def get_hidden_secret_word(prompt_text):
     """
-    Runs one complete game of Hangman for the given secret word.
+    Gets the secret word from Player 1 while hiding the actual letters.
 
-    Requirements handled:
-    - Maximum wrong guesses is 6
-    - Shows current word state
-    - Shows wrong guesses remaining
-    - Shows wrong letters already guessed
-    - Validates user input
-    - Uses case-insensitive comparison
-    - Ends on win or loss and prints result
+    It tries to show asterisks (*) while typing if the Python version supports it.
+    Otherwise, it falls back to fully hidden input.
 
     Parameters:
-        secret_word (str): The secret word to guess.
-        game_number (int): Current game number, used for changing themes.
+        prompt_text (str): Prompt shown to Player 1.
+
+    Returns:
+        str: The entered secret word in lowercase with surrounding spaces removed.
     """
+    try:
+        return getpass(prompt_text, echo_char="*").strip().lower()
+    except TypeError:
+        return getpass(prompt_text).strip().lower()
+
+
+def play_hangman(secret_word, game_number=1):
+    """
+    Runs one full game of Hangman for the given secret word.
+
+    Parameters:
+        secret_word (str): The word to guess.
+        game_number (int): Current game number, used for theme rotation.
+    """
+    secret_word = secret_word.lower()
+    guessed_letters = []
     theme = get_theme(game_number)
 
-    # Convert the secret word to lowercase to make checking case-insensitive.
-    secret_word = secret_word.lower()
-
-    # Store all guessed letters.
-    guessed_letters = []
-
-    # Continue the game until the player wins or loses.
     while True:
         wrong_letters = get_wrong_guesses(guessed_letters, secret_word)
         wrong_count = len(wrong_letters)
 
         clear_screen()
 
-        # Display the current theme name.
         print(colour_text("=" * 50, theme["title"], theme))
         print(colour_text(f"Hangman Theme: {theme['name']}", theme["title"], theme))
         print(colour_text("=" * 50, theme["title"], theme))
 
-        # Display hangman art.
         display_hangman(wrong_count, theme)
 
-        # Display the current progress of the word.
-        display_word = get_display_word(secret_word, guessed_letters)
-        print(colour_text(f"Word: {display_word}", theme["text"], theme))
+        print(colour_text(f"Word: {get_display_word(secret_word, guessed_letters)}", theme["text"], theme))
         print(colour_text(f"Wrong guesses remaining: {MAX_WRONG - wrong_count}", theme["text"], theme))
 
-        # Display wrong guessed letters so the player can see them.
-        if len(wrong_letters) > 0:
+        if wrong_letters:
             print(colour_text(f"Wrong guesses: {', '.join(wrong_letters)}", theme["bad"], theme))
         else:
             print(colour_text("Wrong guesses: none", theme["text"], theme))
 
-        # Check if the player has already won.
         if is_won(secret_word, guessed_letters):
             print()
             print(colour_text(f"Congratulations! You guessed the word: {secret_word}", theme["good"], theme))
-            play_sound("win")
+            play_sound()
             break
 
-        # Check if the player has already lost.
         if is_lost(wrong_count, MAX_WRONG):
             print()
             print(colour_text(f"Game over. You ran out of guesses. The word was: {secret_word}", theme["bad"], theme))
-            play_sound("lose")
+            play_sound()
             break
 
         print()
 
-        # Input validation loop.
         while True:
-            guess = input("Enter a letter: ").lower().strip()
+            guess = input("Enter a letter: ").strip().lower()
 
-            # Reject if input is not exactly one character.
             if len(guess) != 1:
                 print(colour_text("Please enter exactly one character.", theme["warn"], theme))
                 continue
 
-            # Reject if input is not alphabetic.
             if not guess.isalpha():
-                print(colour_text("Please enter a letter from A-Z.", theme["warn"], theme))
+                print(colour_text("Please enter a letter only.", theme["warn"], theme))
                 continue
 
-            # Reject if letter was already guessed.
             if guess in guessed_letters:
-                print(colour_text("You already guessed that letter. Try a new one.", theme["warn"], theme))
+                print(colour_text("You already guessed that letter. Try another one.", theme["warn"], theme))
                 continue
 
-            # If valid, stop the validation loop.
             break
 
-        # Record the valid guess.
         guessed_letters.append(guess)
 
-        # Tell the player whether the guess was correct.
         if guess in secret_word:
             print(colour_text(f"Good guess! '{guess}' is in the word.", theme["good"], theme))
-            play_sound("good")
         else:
-            print(colour_text(f"Sorry, '{guess}' is not in the word.", theme["bad"], theme))
-            play_sound("bad")
+            print(colour_text(f"'{guess}' is not in the word.", theme["bad"], theme))
+            play_sound()
 
-        # Pause briefly so the player can read feedback.
         time.sleep(1.2)
 
 
-# -----------------------------
-# Entry Point
-# -----------------------------
-if __name__ == '__main__':
+if __name__ == "__main__":
     game_number = 1
 
     while True:
         clear_screen()
-
-        # Welcome message
         print("Welcome to Hangman!")
-        print("One player enters a secret word.")
-        print("The other player guesses one letter at a time.")
+        print("Player 1 enters a secret word.")
+        print("Player 2 guesses one letter at a time.")
         print(f"You can make at most {MAX_WRONG} wrong guesses.")
         print()
 
-        # Ask for secret word
-        secret_word = input("Enter a secret word for your opponent to guess: ").strip().lower()
+        secret_word = get_hidden_secret_word("Player 1, enter the secret word: ")
 
-        # Validate the secret word before starting
         while len(secret_word) == 0 or not secret_word.isalpha():
             print("The secret word must contain letters only and cannot be empty.")
-            secret_word = input("Enter a secret word for your opponent to guess: ").strip().lower()
+            secret_word = get_hidden_secret_word("Player 1, enter the secret word: ")
 
-        # Clear the screen so the guessing player does not see the word.
         clear_screen()
+        print("Player 2, it's your turn!")
+        time.sleep(1)
 
-        # Start the game
         play_hangman(secret_word, game_number)
 
-        # Ask if the user wants to play again
         print()
         play_again = input("Would you like to play again? (yes/no): ").strip().lower()
 
